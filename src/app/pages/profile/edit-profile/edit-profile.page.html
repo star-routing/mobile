@@ -1,0 +1,116 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Actualizar datos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="ngOnInit($event.target)">
+    <ion-refresher-content refreshingSpinner="lines">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div class="container">
+    <form [formGroup]="editForm">
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="select-item">
+          <legend>Tipo documento</legend>
+          <ion-select label="Seleccione" formControlName="idTipoDocumento">
+            <ion-select-option *ngFor="let tipoDocumento of tiposDocumento" [value]="tipoDocumento.idTipoDocumento">
+              {{ tipoDocumento.nombreTipo }}
+            </ion-select-option>
+          </ion-select>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Documento</legend>
+          <ion-input formControlName="documentoUsuario" type="text" placeholder="Ingresa tu documento"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div *ngIf="editForm.get('documentoUsuario')?.errors?.['pattern']" class="error-msg">
+        Documento inválido, mínimo 7 y máximo 10 dígitos numéricos.
+      </div>
+      <div *ngIf="editForm.get('documentoUsuario')?.errors?.['required']" class="error-msg">
+        Este campo es obligatorio.
+      </div>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Nombre</legend>
+          <ion-input formControlName="nombreUsuario" type="text" placeholder="Ingresa tu nombre"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div *ngIf="editForm.get('nombreUsuario')?.errors?.['required']" class="error-msg">
+        Este campo es obligatorio.
+      </div>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Apellido</legend>
+          <ion-input formControlName="apellidoUsuario" type="text" placeholder="Ingresa tu apellido"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div *ngIf="editForm.get('apellidoUsuario')?.errors?.['required']" class="error-msg">
+        Este campo es obligatorio.
+      </div>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Teléfono</legend>
+          <ion-input formControlName="telefonoUsuario" type="text" placeholder="Ingresa tu teléfono"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div *ngIf="editForm.get('telefonoUsuario')?.errors?.['required']" class="error-msg">
+        Este campo es obligatorio.
+      </div>
+      <div *ngIf="editForm.get('telefonoUsuario')?.errors?.['pattern']" class="error-msg">
+        Teléfono inválido, debe contener 10 dígitos numéricos.
+      </div>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Correo</legend>
+          <ion-input formControlName="correoUsuario" type="email" placeholder="Ingresa tu email"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div *ngIf="editForm.get('correoUsuario')?.errors?.['required']" class="error-msg">
+        Este campo es obligatorio.
+      </div>
+      <div *ngIf="editForm.get('correoUsuario')?.errors?.['pattern']" class="error-msg">
+        Correo inválido.
+      </div>
+    </form>
+
+    <a href="#" (click)="togglePasswordChange($event)">
+      <span *ngIf="!showPasswordChange">Cambiar contraseña</span>
+      <span *ngIf="showPasswordChange">Cancelar cambio de contraseña</span>
+    </a>
+
+    <form [formGroup]="pwdForm" *ngIf="showPasswordChange">
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Contraseña</legend>
+          <ion-input formControlName="contrasenaUsuario" type="{{ showPassword ? 'text' : 'password' }}"
+            placeholder="Ingresa tu nueva contraseña"></ion-input>
+          <ion-icon name="{{ showPassword ? 'eye-outline' : 'eye-off-outline' }}"
+            color="{{ showPassword ? 'primary' : ''}}" slot="end" (click)="toggleShowPassword()"></ion-icon>
+        </fieldset>
+      </ion-item>
+      <div *ngIf="pwdForm.get('contrasenaUsuario')?.errors?.['pattern']" class="error-msg">
+        La contraseña debe contener mínimo: 8 caracteres, una minúscula, una mayúscula, 3 números y 1 caracter
+        especial.
+      </div>
+      <div *ngIf="pwdForm.get('contrasenaUsuario')?.errors?.['required']" class="error-msg">
+        Este campo es obligatorio.
+      </div>
+    </form>
+    <ion-button class="save-button" expand="block" (click)="saveChanges()"
+      [disabled]="editForm.invalid || (showPasswordChange && pwdForm.get('contrasenaUsuario')?.invalid)">
+      Guardar cambios
+    </ion-button>
+    <br>
+  </div>
+</ion-content>

@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Perfil
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button id="click-trigger-profile">
+        <ion-icon name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+      <ion-popover trigger="click-trigger-profile" triggerAction="click" dismissOnSelect="true">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-item (click)="openEditProfile()">
+              <ion-icon slot="start" name="pencil"></ion-icon>
+              <p>Editar perfil</p>
+            </ion-item>
+            <ion-item (click)="logout()">
+              <ion-icon slot="start" name="log-out-outline"></ion-icon>
+              <p>Cerrar sesión</p>
+            </ion-item>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+  <ion-refresher slot="fixed" (ionRefresh)="getUserData($event.target)">
+    <ion-refresher-content refreshingSpinner="lines"></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="profile-info">
+    <ion-avatar (click)="changeAvatar()">
+      <img [src]="selectedAvatar?.url">
+    </ion-avatar>
+    <div class="name-container">
+      {{ userData?.nombreUsuario }} {{ userData?.apellidoUsuario }}
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-label>Documento</ion-label>
+    <ion-text>{{ userData?.documentoUsuario }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Tipo documento</ion-label>
+    <ion-text>{{ getTipoDocumento(userData?.idTipoDocumento) }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Email</ion-label>
+    <ion-text>{{ userData?.correoUsuario }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Teléfono</ion-label>
+    <ion-text>{{ userData?.telefonoUsuario }}</ion-text>
+  </ion-item>
+
+</ion-content>
